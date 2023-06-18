@@ -9,9 +9,13 @@ import {
   resetPassword,
 } from "../controllers/authController.js";
 import {
+  deleteUser,
+  getAllUsers,
   profile,
   updateShippingAddress,
+  updateUser,
 } from "../controllers/usersController.js";
+import isAdmin from "../middlewares/isAdmin.js";
 
 const router = express.Router();
 
@@ -23,5 +27,9 @@ router.put("/resetPassword/:token", resetPassword);
 
 router.get("/profile", verifyLogin, profile);
 router.put("/update/shipping", verifyLogin, updateShippingAddress);
+
+router.put("/update/:id", verifyLogin, updateUser);
+router.delete("/delete/:id", verifyLogin, deleteUser);
+router.get("/", verifyLogin, isAdmin, getAllUsers);
 
 export default router;
