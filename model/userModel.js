@@ -74,6 +74,10 @@ const UserSchema = new mongoose.Schema(
       },
     },
 
+    passwordUpdatedAt: {
+      type: String,
+    },
+
     passwordResetToken: {
       type: String,
     },
@@ -85,6 +89,14 @@ const UserSchema = new mongoose.Schema(
 
   { timestamps: true }
 );
+
+// Update passwordChangedAt property
+UserSchema.pre("save", function (next) {
+  if (!this.isModified("password") || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
 
 // Creating password reset token
 UserSchema.methods.createPasswordResetToken = function () {

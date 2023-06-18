@@ -9,7 +9,6 @@ import {
 } from "../middlewares/globalErrorHandler.js";
 import Order from "../model/orderModel.js";
 
-import authRoute from "../routes/authRoute.js";
 import usersRoute from "../routes/usersRoute.js";
 import salesRoute from "../routes/salesRoute.js";
 import brandsRoute from "../routes/brandsRoute.js";
@@ -86,7 +85,6 @@ app.post(
 app.use(express.json());
 
 // Routes
-app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users", usersRoute);
 app.use("/api/v1/sales", salesRoute);
 app.use("/api/v1/brands", brandsRoute);
