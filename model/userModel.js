@@ -18,6 +18,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
 
+    image: {
+      type: String,
+    },
+
     orders: [
       {
         type: mongoose.Schema.Types.ObjectId,

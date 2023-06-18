@@ -21,16 +21,17 @@ export const register = expressAsyncHandler(async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   // Create new user
-  const newUser = await User.create({
+  const user = await User.create({
     userName,
     email,
     password: hashedPassword,
+    image: req.file.path,
   });
 
   res.status(201).json({
     status: "success",
     message: "User registered successfully!",
-    data: newUser,
+    user,
   });
 });
 
