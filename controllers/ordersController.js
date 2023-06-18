@@ -5,22 +5,23 @@ import Order from "../model/orderModel.js";
 import Coupon from "../model/couponModel.js";
 import Product from "../model/productModel.js";
 
-import paymentSession from "./paymentController.js";
+import paymentSession from "../utils/payment.js";
 
 // @desc    Create Order
 // @route   POST /api/v1/orders
 // @access  Private
 export const createOrder = expressAsyncHandler(async (req, res) => {
   // Get the coupon
-  const { coupon } = req?.query;
+  const coupon = req?.query?.coupon;
+
   const couponFound = await Coupon.findOne({
     code: coupon?.toUpperCase(),
   });
 
   // Check if coupon exists
-  if (!couponFound) {
-    throw new Error("Coupon not found!");
-  }
+  // if (!couponFound) {
+  //   throw new Error("Coupon not found!");
+  // }
 
   // Check if coupon expired
   if (couponFound?.isExpired) {

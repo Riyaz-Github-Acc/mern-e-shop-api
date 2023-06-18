@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import crypto from "crypto";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -72,9 +73,32 @@ const UserSchema = new mongoose.Schema(
         type: String,
       },
     },
+
+    passwordResetToken: {
+      type: String,
+    },
+
+    passwordResetTokenExpires: {
+      type: Date,
+    },
   },
+
   { timestamps: true }
 );
+
+// Creating password reset token
+UserSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};
 
 const User = mongoose.model("User", UserSchema);
 

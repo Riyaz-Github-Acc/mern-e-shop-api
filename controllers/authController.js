@@ -6,7 +6,7 @@ import generateToken from "../utils/generateToken.js";
 
 // @desc    Register User
 // @route   POST /api/v1/auth/register
-// @access  Private
+// @access  Public
 export const register = expressAsyncHandler(async (req, res) => {
   const { userName, email, password } = req.body;
 
@@ -53,4 +53,31 @@ export const login = expressAsyncHandler(async (req, res) => {
   } else {
     throw new Error("Invalid login credentials!");
   }
+});
+
+// @desc    Forgot Password
+// @route   POST /api/v1/auth/forgotPassword
+// @access  Public
+export const forgotPassword = expressAsyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  // Find the user using email
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new Error("User not found!");
+  }
+
+  // Generate a random token
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+  console.log(resetToken, user.passwordResetToken);
+
+  // Send token to the user email
+});
+
+// @desc    Reset Password
+// @route   PUT /api/v1/auth/resetPassword
+// @access  Public
+export const resetPassword = expressAsyncHandler(async (req, res) => {
+  const { email } = req.body;
 });
