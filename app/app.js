@@ -1,3 +1,4 @@
+import path from "path";
 import dotenv from "dotenv";
 import Stripe from "stripe";
 import express from "express";
@@ -83,6 +84,13 @@ app.post(
 
 // To accept the request
 app.use(express.json());
+
+// Serve static files
+app.use(express.static("public"));
+// Home route
+app.get("/", (req, res) => {
+  res.sendFile(path.join("public", "index.html"));
+});
 
 // Routes
 app.use("/api/v1/users", usersRoute);
