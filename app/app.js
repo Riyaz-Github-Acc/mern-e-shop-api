@@ -1,3 +1,4 @@
+import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
 import Stripe from "stripe";
@@ -28,6 +29,9 @@ const app = express();
 
 // DB connection
 dbConnect();
+
+// CORS
+app.use(cors());
 
 // Stripe webhook
 // Stripe instance
