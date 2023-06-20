@@ -48,6 +48,7 @@ export const login = expressAsyncHandler(async (req, res) => {
     res.status(200).json({
       status: "success",
       message: "User logged in successfully!",
+      user,
       token: generateToken(user._id),
     });
   } else {
