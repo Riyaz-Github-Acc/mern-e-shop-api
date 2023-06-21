@@ -21,6 +21,8 @@ const UserSchema = new mongoose.Schema(
 
     image: {
       type: String,
+      default:
+        "https://png.pngtree.com/png-clipart/20210129/ourmid/pngtree-default-male-avatar-png-image_2811083.jpg",
     },
 
     orders: [
