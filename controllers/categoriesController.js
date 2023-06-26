@@ -18,7 +18,7 @@ export const createCategory = expressAsyncHandler(async (req, res) => {
   const category = await Category.create({
     name: name.toLowerCase(),
     user: req.userAuthId,
-    image: req.file.path,
+    image: req?.file?.path,
   });
 
   res.status(201).json({
@@ -79,11 +79,47 @@ export const getCategory = expressAsyncHandler(async (req, res) => {
 // @route   GET /api/v1/categories
 // @access  Public
 export const getAllCategories = expressAsyncHandler(async (req, res) => {
-  const categories = await Category.find();
+  let categoryQuery = Category.find();
+});
 
-  res.status(200).json({
-    status: "success",
-    message: "Categories fetched successfully!",
-    categories,
-  });
+// Pagination
+// Page
+const page = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
+// Limit
+const limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
+// Start Index
+const startIndex = (page - 1) * limit;
+// End Index
+const endIndex = page * limit;
+// Total
+const total = await Category.countDocuments();
+
+categoryQuery = categoryQuery.skip(startIndex).limit(limit);
+
+// Pagination results
+const pagination = {};
+if (endIndex < total) {
+  pagination.next = {
+    page: page + 1,
+    limit,
+  };
+}
+
+if (startIndex > 0) {
+  pagination.prev = {
+    page: page - 1,
+    limit,
+  };
+}
+
+// Await the categoryQuery
+const categories = await categoryQuery;
+
+res.status(200).json({
+  status: "success",
+  message: "Categories fetched successfully!",
+  total,
+  results: categories.length,
+  pagination,
+  categories,
 });

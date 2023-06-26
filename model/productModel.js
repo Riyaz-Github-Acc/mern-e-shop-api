@@ -4,34 +4,34 @@ const ProductSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Please add product name"],
     },
 
     desc: {
       type: String,
-      required: true,
+      required: [true, "Please add product description"],
     },
 
     brand: {
       type: String,
-      required: true,
+      required: [true, "Please add product brand"],
     },
 
     category: {
       type: String,
       ref: "Category",
-      required: true,
+      required: [true, "Please add product category"],
     },
 
     sizes: {
       type: [String],
       enum: ["S", "M", "L", "XL", "XXL"],
-      required: true,
+      required: [true, "Please add product size"],
     },
 
     colors: {
       type: [String],
-      required: true,
+      required: [true, "Please add product color"],
     },
 
     user: {
@@ -43,7 +43,7 @@ const ProductSchema = new mongoose.Schema(
     images: [
       {
         type: String,
-        required: true,
+        required: [true, "Please add product image"],
       },
     ],
 
@@ -56,12 +56,12 @@ const ProductSchema = new mongoose.Schema(
 
     price: {
       type: Number,
-      required: true,
+      required: [true, "Please add product price"],
     },
 
     totalQty: {
       type: Number,
-      required: true,
+      required: [true, "Please add product total quantity"],
     },
 
     totalSold: {
