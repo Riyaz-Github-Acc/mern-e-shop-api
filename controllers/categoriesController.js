@@ -80,46 +80,46 @@ export const getCategory = expressAsyncHandler(async (req, res) => {
 // @access  Public
 export const getAllCategories = expressAsyncHandler(async (req, res) => {
   let categoryQuery = Category.find();
-});
 
-// Pagination
-// Page
-const page = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
-// Limit
-const limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
-// Start Index
-const startIndex = (page - 1) * limit;
-// End Index
-const endIndex = page * limit;
-// Total
-const total = await Category.countDocuments();
+  // Pagination
+  // Page
+  const page = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
+  // Limit
+  const limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
+  // Start Index
+  const startIndex = (page - 1) * limit;
+  // End Index
+  const endIndex = page * limit;
+  // Total
+  const total = await Category.countDocuments();
 
-categoryQuery = categoryQuery.skip(startIndex).limit(limit);
+  categoryQuery = categoryQuery.skip(startIndex).limit(limit);
 
-// Pagination results
-const pagination = {};
-if (endIndex < total) {
-  pagination.next = {
-    page: page + 1,
-    limit,
-  };
-}
+  // Pagination results
+  const pagination = {};
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit,
+    };
+  }
 
-if (startIndex > 0) {
-  pagination.prev = {
-    page: page - 1,
-    limit,
-  };
-}
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit,
+    };
+  }
 
-// Await the categoryQuery
-const categories = await categoryQuery;
+  // Await the categoryQuery
+  const categories = await categoryQuery;
 
-res.status(200).json({
-  status: "success",
-  message: "Categories fetched successfully!",
-  total,
-  results: categories.length,
-  pagination,
-  categories,
+  res.status(200).json({
+    status: "success",
+    message: "Categories fetched successfully!",
+    total,
+    results: categories.length,
+    pagination,
+    categories,
+  });
 });
