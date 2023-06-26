@@ -145,6 +145,13 @@ export const getAllProducts = expressAsyncHandler(async (req, res) => {
     });
   }
 
+  // Filter by category
+  if (req.query.category) {
+    productQuery = productQuery.find({
+      category: { $regex: req.query.category, $options: "i" },
+    });
+  }
+
   // Filter by brand
   if (req.query.brand) {
     productQuery = productQuery.find({
