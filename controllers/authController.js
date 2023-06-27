@@ -46,13 +46,11 @@ export const login = expressAsyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    const id = user._id;
-
     res.status(200).json({
       status: "success",
       message: "User logged in successfully!",
       user,
-      token: generateToken(id),
+      token: generateToken(user._id),
     });
   } else {
     throw new Error("Invalid login credentials!");
