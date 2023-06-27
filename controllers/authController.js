@@ -5,7 +5,6 @@ import expressAsyncHandler from "express-async-handler";
 import User from "../model/userModel.js";
 import sendEmail from "../utils/email.js";
 import generateToken from "../utils/generateToken.js";
-import refreshToken from "../utils/refreshToken.js";
 
 // @desc    Register User
 // @route   POST /api/v1/users/register

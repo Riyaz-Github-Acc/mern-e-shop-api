@@ -5,7 +5,6 @@ import verifyLogin from "../middlewares/verifyLogin.js";
 import {
   forgotPassword,
   login,
-  refresh,
   register,
   resetPassword,
 } from "../controllers/authController.js";
