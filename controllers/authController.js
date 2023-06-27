@@ -49,14 +49,7 @@ export const login = expressAsyncHandler(async (req, res) => {
   if (user && (await bcrypt.compare(password, user.password))) {
     const id = user._id;
 
-    res.cookie("jwt", refreshToken(id), {
-      httpOnly: true,
-      sameSite: "None",
-      secure: true,
-      maxAge: 24 * 60 * 60 * 1000 * 30,
-    });
-
-    return res.status(200).json({
+    res.status(200).json({
       status: "success",
       message: "User logged in successfully!",
       user,
@@ -64,34 +57,6 @@ export const login = expressAsyncHandler(async (req, res) => {
     });
   } else {
     throw new Error("Invalid login credentials!");
-  }
-});
-
-// @desc    Refresh Token
-// @route   POST /api/v1/users/refresh
-// @access  Public
-export const refresh = expressAsyncHandler(async (req, res) => {
-  if (req?.cookies?.jwt) {
-    // Destructuring refreshToken from cookie
-    const refreshToken = req.cookies.jwt;
-
-    // Verifying refresh token
-    jwt.verify(
-      refreshToken,
-      process.env.JWT_REFRESH_SECRET_KEY,
-      (err, decoded) => {
-        if (err) {
-          // Wrong Refesh Token
-          return res.status(406).json({ message: "Unauthorized" });
-        } else {
-          return res.status(200).json({
-            token: generateToken(id),
-          });
-        }
-      }
-    );
-  } else {
-    return res.status(406).json({ message: "Unauthorized" });
   }
 });
 
