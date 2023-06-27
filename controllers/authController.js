@@ -5,9 +5,10 @@ import expressAsyncHandler from "express-async-handler";
 import User from "../model/userModel.js";
 import sendEmail from "../utils/email.js";
 import generateToken from "../utils/generateToken.js";
+import refreshToken from "../utils/refreshToken.js";
 
 // @desc    Register User
-// @route   POST /api/v1/auth/register
+// @route   POST /api/v1/users/register
 // @access  Public
 export const register = expressAsyncHandler(async (req, res) => {
   const { userName, email, password } = req.body;
@@ -38,7 +39,7 @@ export const register = expressAsyncHandler(async (req, res) => {
 });
 
 // @desc    Login User
-// @route   POST /api/v1/auth/login
+// @route   POST /api/v1/users/login
 // @access  Public
 export const login = expressAsyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -46,19 +47,56 @@ export const login = expressAsyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.status(200).json({
+    const id = user._id;
+
+    res.cookie("jwt", refreshToken(id), {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000 * 30,
+    });
+
+    return res.status(200).json({
       status: "success",
       message: "User logged in successfully!",
       user,
-      token: generateToken(user._id),
+      token: generateToken(id),
     });
   } else {
     throw new Error("Invalid login credentials!");
   }
 });
 
+// @desc    Refresh Token
+// @route   POST /api/v1/users/refresh
+// @access  Public
+export const refresh = expressAsyncHandler(async (req, res) => {
+  if (req?.cookies?.jwt) {
+    // Destructuring refreshToken from cookie
+    const refreshToken = req.cookies.jwt;
+
+    // Verifying refresh token
+    jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET_KEY,
+      (err, decoded) => {
+        if (err) {
+          // Wrong Refesh Token
+          return res.status(406).json({ message: "Unauthorized" });
+        } else {
+          return res.status(200).json({
+            token: generateToken(id),
+          });
+        }
+      }
+    );
+  } else {
+    return res.status(406).json({ message: "Unauthorized" });
+  }
+});
+
 // @desc    Forgot Password
-// @route   POST /api/v1/auth/forgotPassword
+// @route   POST /api/v1/users/forgotPassword
 // @access  Public
 export const forgotPassword = expressAsyncHandler(async (req, res, next) => {
   const { email } = req.body;
@@ -103,7 +141,7 @@ export const forgotPassword = expressAsyncHandler(async (req, res, next) => {
 });
 
 // @desc    Reset Password
-// @route   PUT /api/v1/auth/resetPassword/:token
+// @route   PUT /api/v1/users/resetPassword/:token
 // @access  Public
 export const resetPassword = expressAsyncHandler(async (req, res, next) => {
   const { password } = req.body;

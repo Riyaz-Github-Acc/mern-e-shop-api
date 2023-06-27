@@ -5,6 +5,7 @@ import verifyLogin from "../middlewares/verifyLogin.js";
 import {
   forgotPassword,
   login,
+  refresh,
   register,
   resetPassword,
 } from "../controllers/authController.js";
@@ -21,6 +22,7 @@ const router = express.Router();
 
 router.post("/register", pictureUpload.single("file"), register);
 router.post("/login", login);
+router.post("/refresh", refresh);
 
 router.post("/forgotPassword", forgotPassword);
 router.put("/resetPassword/:token", resetPassword);
