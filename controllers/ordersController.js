@@ -29,7 +29,7 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
   }
 
   // Get the discount
-  const discount = couponFound?.discount / 100;
+  // const discount = couponFound?.discount / 100;
 
   // Find the user
   const user = await User.findById(req.userAuthId);
@@ -52,9 +52,9 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
     user: user?._id,
     orderItems,
     shippingAddress,
-    totalPrice: couponFound ? totalPrice - totalPrice * discount : totalPrice,
+    totalPrice,
+    // totalPrice: couponFound ? totalPrice - totalPrice * discount : totalPrice,
   });
-  console.log(order);
 
   // Update the product qty and sold
   const products = await Product.find({ _id: { $in: orderItems } });
