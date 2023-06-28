@@ -9,7 +9,9 @@ export const createBrand = expressAsyncHandler(async (req, res) => {
   const { name } = req.body;
 
   // Brand exists
-  const brandExists = await Brand.findOne({ name });
+  const brandExists = await Brand.findOne({
+    name: { $regex: name, $options: "i" },
+  });
   if (brandExists) {
     throw new Error("Brand already exists!");
   }

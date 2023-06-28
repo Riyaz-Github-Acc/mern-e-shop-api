@@ -9,7 +9,9 @@ export const createColor = expressAsyncHandler(async (req, res) => {
   const { name } = req.body;
 
   // Color exists
-  const colorExists = await Color.findOne({ name });
+  const colorExists = await Color.findOne({
+    name: { $regex: name, $options: "i" },
+  });
   if (colorExists) {
     throw new Error("Color already exists!");
   }

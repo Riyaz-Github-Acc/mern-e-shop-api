@@ -11,7 +11,7 @@ export const createCoupon = asyncHandler(async (req, res) => {
   //Check if admin
   //Check if coupon already exists
   const couponsExists = await Coupon.findOne({
-    code,
+    code: { $regex: code, $options: "i" },
   });
 
   if (couponsExists) {

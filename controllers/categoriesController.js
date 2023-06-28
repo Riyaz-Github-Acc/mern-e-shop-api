@@ -9,7 +9,9 @@ export const createCategory = expressAsyncHandler(async (req, res) => {
   const { name } = req.body;
 
   // Category exists
-  const categoryExists = await Category.findOne({ name });
+  const categoryExists = await Category.findOne({
+    name: { $regex: name, $options: "i" },
+  });
   if (categoryExists) {
     throw new Error("Category already exists!");
   }
