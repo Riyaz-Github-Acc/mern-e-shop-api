@@ -2,7 +2,6 @@ import expressAsyncHandler from "express-async-handler";
 
 import User from "../model/userModel.js";
 import Order from "../model/orderModel.js";
-import Coupon from "../model/couponModel.js";
 import Product from "../model/productModel.js";
 
 import paymentSession from "../utils/payment.js";
@@ -11,26 +10,6 @@ import paymentSession from "../utils/payment.js";
 // @route   POST /api/v1/orders
 // @access  Private
 export const createOrder = expressAsyncHandler(async (req, res) => {
-  // Get the coupon
-  const coupon = req?.query?.coupon;
-
-  const couponFound = await Coupon.findOne({
-    code: coupon?.toUpperCase(),
-  });
-
-  // Check if coupon exists
-  // if (!couponFound) {
-  //   throw new Error("Coupon not found!");
-  // }
-
-  // Check if coupon expired
-  if (couponFound?.isExpired) {
-    throw new Error("Coupon has expired!");
-  }
-
-  // Get the discount
-  // const discount = couponFound?.discount / 100;
-
   // Find the user
   const user = await User.findById(req.userAuthId);
 
@@ -53,7 +32,6 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
     orderItems,
     shippingAddress,
     totalPrice,
-    // totalPrice: couponFound ? totalPrice - totalPrice * discount : totalPrice,
   });
 
   // Update the product qty and sold

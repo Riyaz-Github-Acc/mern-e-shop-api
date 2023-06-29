@@ -8,7 +8,6 @@ import Coupon from "../model/couponModel.js";
 export const createCoupon = asyncHandler(async (req, res) => {
   const { code, startDate, endDate, discount } = req.body;
 
-  //Check if admin
   //Check if coupon already exists
   const couponsExists = await Coupon.findOne({
     code: { $regex: code, $options: "i" },
@@ -78,10 +77,21 @@ export const deleteCoupon = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get Coupon
-// @route   GET /api/v1/coupons/:id
+// @route   GET /api/v1/coupons/single
 // @access  Private
 export const getCoupon = asyncHandler(async (req, res) => {
-  const coupon = await Coupon.findById(req.params.id);
+  const coupon = await Coupon.findOne({ code: req.query.code });
+
+  // If coupon not found
+  if (coupon === null) {
+    throw new Error("Coupon not found!");
+  }
+
+  // Check if expired
+  if (coupon.isExpired) {
+    throw new Error("Coupon expired!");
+  }
+
   res.json({
     status: "success",
     message: "Coupon fetched successfully!",

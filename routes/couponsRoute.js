@@ -15,7 +15,7 @@ const router = express.Router();
 router.post("/", verifyLogin, isAdmin, createCoupon);
 router.put("/:id", verifyLogin, isAdmin, updateCoupon);
 router.delete("/:id", verifyLogin, isAdmin, deleteCoupon);
-router.get("/:id", getCoupon);
+router.get("/single", getCoupon);
 router.get("/", getAllCoupons);
 
 export default router;
