@@ -27,7 +27,7 @@ export const register = expressAsyncHandler(async (req, res) => {
     userName,
     email,
     password: hashedPassword,
-    // image: req.file.path,
+    image: req.file.path,
   });
 
   res.status(201).json({
