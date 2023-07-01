@@ -6,7 +6,7 @@ import User from "../model/userModel.js";
 // @route   GET /api/v1/users/profile
 // @access  Public
 export const profile = expressAsyncHandler(async (req, res) => {
-  const user = await User.findById(req.userAuthId).populate("users");
+  const user = await User.findById(req.userAuthId).populate("orders");
   res.status(200).json({
     status: "success",
     message: "User profile fetched successfully!",
