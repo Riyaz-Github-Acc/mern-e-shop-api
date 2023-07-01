@@ -5,22 +5,23 @@ const UserSchema = new mongoose.Schema(
   {
     userName: {
       type: String,
-      required: true,
+      required: [true, "Please enter a userName"],
     },
 
     email: {
       type: String,
-      required: true,
+      required: [true, "Please enter a email address"],
       unique: true,
     },
 
     password: {
       type: String,
-      required: true,
+      required: [true, "Please enter a password"],
     },
 
     image: {
       type: String,
+      default: "../assests/images/profile-pic-upload-placeholder.png",
     },
 
     orders: [
