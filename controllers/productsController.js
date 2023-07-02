@@ -119,7 +119,13 @@ export const deleteProduct = expressAsyncHandler(async (req, res) => {
 // @route   GET /api/v1/products/:id
 // @access  Public
 export const getProduct = expressAsyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id).populate("reviews");
+  const product = await Product.findById(req.params.id).populate({
+    path: "reviews",
+    populate: {
+      path: "user",
+      select: "userName",
+    },
+  });
 
   if (!product) {
     throw new Error("Product not found!");

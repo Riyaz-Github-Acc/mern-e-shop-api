@@ -28,7 +28,12 @@ router.put("/resetPassword/:token", resetPassword);
 router.get("/profile", verifyLogin, profile);
 router.put("/update/shipping", verifyLogin, updateShippingAddress);
 
-router.put("/update/:id", verifyLogin, updateUser);
+router.put(
+  "/update/:id",
+  verifyLogin,
+  pictureUpload.single("file"),
+  updateUser
+);
 router.delete("/delete/:id", verifyLogin, deleteUser);
 router.get("/", verifyLogin, isAdmin, getAllUsers);
 
