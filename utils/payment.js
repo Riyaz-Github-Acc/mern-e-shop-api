@@ -28,8 +28,8 @@ const paymentSession = async (orderItems, order) => {
       orderId: JSON.stringify(order?._id),
     },
     mode: "payment",
-    success_url: "http://localhost:8800/success",
-    cancel_url: "http://localhost:8800/cancel",
+    success_url: "https://merneshop.netlify.app/success",
+    cancel_url: "https://merneshop.netlify.app/failed",
   });
 
   return session.url;
