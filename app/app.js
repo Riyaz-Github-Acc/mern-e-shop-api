@@ -3,6 +3,7 @@ import path from "path";
 import dotenv from "dotenv";
 import Stripe from "stripe";
 import express from "express";
+import bodyParser from "body-parser";
 
 import dbConnect from "../config/dbConnect.js";
 import {
@@ -27,6 +28,9 @@ dotenv.config();
 // To use express
 const app = express();
 
+// Body Parser
+app.use(bodyParser.json());
+
 // DB connection
 dbConnect();
 
@@ -49,7 +53,11 @@ app.post(
     let event;
 
     try {
-      event = stripe.webhooks.constructEvent(request.body, sig, webhookSecret);
+      event = stripe.webhooks.constructEvent(
+        request.rawBody,
+        sig,
+        webhookSecret
+      );
     } catch (err) {
       response.status(400).send(`Webhook Error: ${err.message}`);
       return;
