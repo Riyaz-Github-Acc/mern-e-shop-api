@@ -37,8 +37,8 @@ app.use(cors());
 // Stripe instance
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
+// This is your Stripe CLI webhook signing secret for testing your endpoint locally.
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 app.post(
   "/webhook",
@@ -49,7 +49,7 @@ app.post(
     let event;
 
     try {
-      event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+      event = stripe.webhooks.constructEvent(request.body, sig, webhookSecret);
     } catch (err) {
       response.status(400).send(`Webhook Error: ${err.message}`);
       return;
@@ -75,8 +75,6 @@ app.post(
         },
         { new: true }
       );
-
-      console.log(order);
     } else {
       return;
     }
