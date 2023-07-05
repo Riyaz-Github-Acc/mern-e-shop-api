@@ -29,7 +29,7 @@ dotenv.config();
 const app = express();
 
 // Body Parser
-app.use(bodyParser.json());
+app.use(express.raw({ type: "application/json" }));
 
 // DB connection
 dbConnect();
