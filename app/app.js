@@ -28,11 +28,11 @@ dotenv.config();
 // To use express
 const app = express();
 
-// // To Use JSON In Express Application
-// app.use(express.json());
+// To Use JSON In Express Application
+app.use(express.json());
 
-// // Body Parser
-// app.use(express.raw({ type: "application/json" }));
+// Body Parser
+app.use(express.raw({ type: "application/json" }));
 
 // DB connection
 dbConnect();
@@ -56,11 +56,7 @@ app.post(
     let event;
 
     try {
-      event = stripe.webhooks.constructEvent(
-        request.rawBody,
-        sig,
-        webhookSecret
-      );
+      event = stripe.webhooks.constructEvent(request.body, sig, webhookSecret);
     } catch (err) {
       response.status(400).send(`Webhook Error: ${err.message}`);
       return;
