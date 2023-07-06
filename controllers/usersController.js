@@ -77,7 +77,7 @@ export const updateUser = expressAsyncHandler(async (req, res) => {
       {
         userName,
         email,
-        image: req.file.path,
+        // image: req.file.path,
       },
       { new: true }
     );
