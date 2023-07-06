@@ -63,7 +63,6 @@ export const updateUser = expressAsyncHandler(async (req, res) => {
 
   // Find the user
   const user = await User.findById(req.userAuthId);
-  // console.log(JSON.stringify(user._id));
 
   // Check the user is exist
   if (!user) {
