@@ -28,9 +28,6 @@ dotenv.config();
 // To use express
 const app = express();
 
-// To Use JSON In Express Application
-app.use(express.json());
-
 // Body Parser
 app.use(express.raw({ type: "application/json" }));
 
