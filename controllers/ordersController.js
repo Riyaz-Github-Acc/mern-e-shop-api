@@ -94,7 +94,7 @@ export const getOrder = expressAsyncHandler(async (req, res) => {
 // @route   GET /api/v1/orders
 // @access  Private
 export const getAllOrders = expressAsyncHandler(async (req, res) => {
-  let orderQuery = Order.find().populate("user");
+  let orderQuery = Order.find().populate("user").sort({ createdAt: -1 });
 
   // Pagination
   // Page
