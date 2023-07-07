@@ -3,7 +3,6 @@ import path from "path";
 import dotenv from "dotenv";
 import Stripe from "stripe";
 import express from "express";
-import bodyParser from "body-parser";
 
 import dbConnect from "../config/dbConnect.js";
 import {
@@ -27,9 +26,6 @@ dotenv.config();
 
 // To use express
 const app = express();
-
-// Body Parser
-// app.use(express.raw({ type: "application/json" }));
 
 // DB connection
 dbConnect();
@@ -93,6 +89,7 @@ app.use(express.json());
 
 // Serve static files
 app.use(express.static("public"));
+
 // Home route
 app.get("/", (req, res) => {
   res.sendFile(path.join("public", "index.html"));

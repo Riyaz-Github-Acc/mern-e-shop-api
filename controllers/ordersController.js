@@ -100,7 +100,9 @@ export const getAllOrders = expressAsyncHandler(async (req, res) => {
   // Page
   const page = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
   // Limit
-  const limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
+  const limit = parseInt(req.query.limit)
+    ? parseInt(req.query.limit)
+    : Infinity;
   // Start Index
   const startIndex = (page - 1) * limit;
   // End Index
