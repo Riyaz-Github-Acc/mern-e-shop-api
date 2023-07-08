@@ -187,6 +187,18 @@ export const getAllProducts = expressAsyncHandler(async (req, res) => {
     });
   }
 
+  // Search by name, category, or brand
+  const searchQuery = req.query.search;
+  if (searchQuery) {
+    productQuery = productQuery.find({
+      $or: [
+        { name: { $regex: searchQuery, $options: "i" } },
+        { category: { $regex: searchQuery, $options: "i" } },
+        { brand: { $regex: searchQuery, $options: "i" } },
+      ],
+    });
+  }
+
   // Pagination
   // Page
   const page = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
