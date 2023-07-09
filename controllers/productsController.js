@@ -142,7 +142,7 @@ export const getProduct = expressAsyncHandler(async (req, res) => {
 // @route   GET /api/v1/products
 // @access  Public
 export const getAllProducts = expressAsyncHandler(async (req, res) => {
-  let productQuery = Product.find();
+  let productQuery = Product.find().sort({ createdAt: -1 });
 
   // Filter by name
   if (req.query.name) {
