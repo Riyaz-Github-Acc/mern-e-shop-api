@@ -35,7 +35,7 @@ export const getSalesReport = expressAsyncHandler(async (req, res) => {
     {
       $match: {
         createdAt: {
-          $lte: today,
+          $gte: today,
         },
       },
     },
